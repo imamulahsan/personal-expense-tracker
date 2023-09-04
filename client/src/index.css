@@ -3,3 +3,14 @@
   margin: 0;
   box-sizing: border-box;
 }
+
+.content {
+  height: 80vh;
+}
+
+.resgister-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 90vh;
+}
