@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Form, Input, message, Modal, Select, Table, DatePicker } from "antd";
+import { Form, Input, message, Modal, Select, Table, DatePicker, Col, Row, Card } from "antd";
 import Layout from "./../components/Layout/Layout";
 import axios from "axios";
 import Spinner from "./../components/Spinner";
+import { UserOutlined } from '@ant-design/icons';
+import { Avatar, Space } from 'antd';
 const { RangePicker } = DatePicker;
+
 
 const HomePage = () => {
   const [showModal, setShowModal] = useState(false);
@@ -12,6 +15,8 @@ const HomePage = () => {
   const [frequency, setFrequency] = useState("7");
   const [selectedDate, setSelectedate] = useState([]);
   const [type, setType] = useState("all");
+  const [loginUser, setLoginUser] = useState("");
+ 
 
   //table data
   const columns = [
@@ -44,6 +49,10 @@ const HomePage = () => {
 
 
   useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (user) {
+      setLoginUser(user);
+    }
     const getAllTransactions = async () => {
       try {
         const user = JSON.parse(localStorage.getItem("user"));
@@ -86,8 +95,33 @@ const HomePage = () => {
   return (
     <Layout>
       {loading && <Spinner />}
-      <div className="filters">
-      <div>
+      <Row gutter={24}>
+    <Col span={4}>
+      <Card title="Expense Manager"
+      headStyle={{ backgroundColor: '#5c6cfa', color: '#ffffff' }}
+      bodyStyle={{ backgroundColor: '#a9bbff' }}
+      >
+
+    <Space wrap size={32}>
+      <Avatar size={64} icon={<UserOutlined />} />
+      <p>Hi! {loginUser && loginUser.name}</p>{" "}
+    </Space>
+      
+      
+        <div>
+          <button
+            className="btn btn-primary"
+            onClick={() => setShowModal(true)}
+          >
+            Add New
+          </button>
+        </div>
+      </Card>
+    </Col>
+    <Col span={20}>
+      <Card title="Expense Controller" bordered={false}>
+      <div className="filters" >
+      <div >
           <h6>Select Frequency</h6>
           <Select value={frequency} onChange={(values) => setFrequency(values)}>
             <Select.Option value="7">LAST 1 Week</Select.Option>
@@ -116,16 +150,24 @@ const HomePage = () => {
             />
           )}
         </div>
-        <div>
-          <button
-            className="btn btn-primary"
-            onClick={() => setShowModal(true)}
-          >
-            Add New
-          </button>
-        </div>
+
       </div>
-      <div className="content">
+      
+      </Card>
+    </Col>
+  </Row>
+
+      <Row>
+        <Col span={8}>
+        <div >
+      
+        
+      </div>
+        
+        </Col>
+
+        <Col  span={16}>
+        <div className="content">
         <Table columns={columns} dataSource={allTransection} />
       </div>
       <Modal
@@ -174,6 +216,13 @@ const HomePage = () => {
           </div>
         </Form>
       </Modal>
+        </Col>
+
+
+      </Row>
+
+      
+      
     </Layout>
   );
 };
