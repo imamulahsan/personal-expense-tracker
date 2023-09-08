@@ -16,11 +16,46 @@
 }
 
 /* transection page */
-.filters {
+.user-area{
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 15px 20px;
-  box-shadow: 0 0 3px gray;
+  justify-content: center;
+  padding: 2px;
+  margin: 3px;
+}
+
+.h4{
+  margin-left: 10px;
+}
+
+h5{
+  text-align: center;
+  margin-top: 40px;
+}
+
+.user-button{
+  display: flex;
+  justify-content: center;
+  padding: 5px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+
+}
+
+
+.date-filter {
+  display: flex;
+  justify-content: center;
+  padding: 5px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.type-filter{
+  display: flex;
+  justify-content: center;
+  padding: 5px;
+  margin-top: 15px;
+  margin-bottom: 10px;
+
 }
 /* transection page */

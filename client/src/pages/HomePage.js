@@ -4,7 +4,8 @@ import Layout from "./../components/Layout/Layout";
 import axios from "axios";
 import Spinner from "./../components/Spinner";
 import { UserOutlined } from '@ant-design/icons';
-import { Avatar, Space } from 'antd';
+import { Avatar } from 'antd';
+import moment from "moment";
 const { RangePicker } = DatePicker;
 
 
@@ -23,6 +24,7 @@ const HomePage = () => {
     {
       title: "Date",
       dataIndex: "date",
+      render: (text) => <span>{moment(text).format("YYYY-MM-DD")}</span>,
     },
     {
       title: "Amount",
@@ -95,39 +97,34 @@ const HomePage = () => {
   return (
     <Layout>
       {loading && <Spinner />}
-      <Row gutter={24}>
-    <Col span={4}>
-      <Card title="Expense Manager"
-      headStyle={{ backgroundColor: '#5c6cfa', color: '#ffffff' }}
-      bodyStyle={{ backgroundColor: '#a9bbff' }}
-      >
-
-    <Space wrap size={32}>
-      <Avatar size={64} icon={<UserOutlined />} />
-      <p>Hi! {loginUser && loginUser.name}</p>{" "}
-    </Space>
-      
-      
-        <div>
+      <Row>
+      <Col span={4}>
+        <Card title="Expense Manager"
+        headStyle={{ backgroundColor: '#1B4F72', color: '#ffffff' }}
+        style={{ height: "87%" , backgroundColor: '#EAF2F8' }}
+        >
+        <div className="user-area"> 
+        <Avatar size={32} icon={<UserOutlined />} />
+        <p className="h4">{loginUser && loginUser.name}</p>{" "}
+        </div>
+        
+        <div className="user-button">
           <button
-            className="btn btn-primary"
+            className="btn btn-outline-dark" 
             onClick={() => setShowModal(true)}
           >
-            Add New
+            Add Income/ Expense
           </button>
         </div>
-      </Card>
-    </Col>
-    <Col span={20}>
-      <Card title="Expense Controller" bordered={false}>
-      <div className="filters" >
-      <div >
-          <h6>Select Frequency</h6>
+
+        <h5>Filter by date</h5>
+       
+        <div className="date-filter">
           <Select value={frequency} onChange={(values) => setFrequency(values)}>
-            <Select.Option value="7">LAST 1 Week</Select.Option>
-            <Select.Option value="30">LAST 1 Month</Select.Option>
-            <Select.Option value="365">LAST 1 year</Select.Option>
-            <Select.Option value="custom">custom</Select.Option>
+            <Select.Option value="7">Past Week</Select.Option>
+            <Select.Option value="30">Past Month</Select.Option>
+            <Select.Option value="365">Past year</Select.Option>
+            <Select.Option value="custom">Custom</Select.Option>
           </Select>
           {frequency === "custom" && (
             <RangePicker
@@ -135,47 +132,34 @@ const HomePage = () => {
               onChange={(values) => setSelectedate(values)}
             />
           )}
+         
         </div>
-        <div>
-          <h6>Select Type</h6>
+        <h5>Filter by type</h5>
+        <div className="type-filter">
           <Select value={type} onChange={(values) => setType(values)}>
-            <Select.Option value="all">ALL</Select.Option>
-            <Select.Option value="income">INCOME</Select.Option>
-            <Select.Option value="expense">EXPENSE</Select.Option>
+            <Select.Option value="income">Income</Select.Option>
+            <Select.Option value="expense">Expense</Select.Option>
+            <Select.Option value="all">Both</Select.Option>
           </Select>
-          {frequency === "custom" && (
-            <RangePicker
-              value={selectedDate}
-              onChange={(values) => setSelectedate(values)}
-            />
-          )}
+          
         </div>
 
-      </div>
-      
-      </Card>
-    </Col>
-  </Row>
+        </Card>
+      </Col>
 
-      <Row>
-        <Col span={8}>
-        <div >
-      
-        
-      </div>
-        
-        </Col>
-
-        <Col  span={16}>
+      <Col span={20}>
+        <Card title="History"
+        headStyle={{ backgroundColor: '#1B4F72', color: '#ffffff' }}
+        style={{ height: "87%" , backgroundColor: '#D6EAF8' }}>
         <div className="content">
         <Table columns={columns} dataSource={allTransection} />
-      </div>
-      <Modal
-        title="Add Transection"
+        </div>
+        <Modal
+        title="Add Transaction"
         open={showModal}
         onCancel={() => setShowModal(false)}
         footer={false}
-      >
+        >
         <Form layout="vertical" onFinish={handleSubmit}>
           <Form.Item label="Amount" name="amount">
             <Input type="text" />
@@ -214,15 +198,15 @@ const HomePage = () => {
               SAVE
             </button>
           </div>
-        </Form>
-      </Modal>
-        </Col>
+          </Form>
+        </Modal>
 
+        </Card>
 
-      </Row>
-
-      
-      
+          
+      </Col>
+  </Row>
+       
     </Layout>
   );
 };
