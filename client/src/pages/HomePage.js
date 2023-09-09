@@ -150,7 +150,7 @@ const HomePage = () => {
       <Col span={20}>
         <Card title="History"
         headStyle={{ backgroundColor: '#1B4F72', color: '#ffffff' }}
-        style={{ height: "87%" , backgroundColor: '#D6EAF8' }}>
+        style={{ height: "50%" , backgroundColor: '#D6EAF8' }}>
         <div className="content">
         <Table columns={columns} dataSource={allTransection} />
         </div>
@@ -201,7 +201,15 @@ const HomePage = () => {
           </Form>
         </Modal>
 
+       
+
+
+
         </Card>
+        <Row>
+      <Col span={12}>col-12</Col>
+      <Col span={12}>col-12</Col>
+    </Row>
 
           
       </Col>
