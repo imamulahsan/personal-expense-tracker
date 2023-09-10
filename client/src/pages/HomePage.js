@@ -152,7 +152,9 @@ const HomePage = () => {
         headStyle={{ backgroundColor: '#1B4F72', color: '#ffffff' }}
         style={{ height: "50%" , backgroundColor: '#D6EAF8' }}>
         <div className="content">
-        <Table columns={columns} dataSource={allTransection} />
+        <Table columns={columns} 
+         dataSource={allTransection}
+         pagination={{ defaultPageSize: 3, showSizeChanger: true, pageSizeOptions: ['3', '6', '9']}} />
         </div>
         <Modal
         title="Add Transaction"
@@ -201,17 +203,18 @@ const HomePage = () => {
           </Form>
         </Modal>
 
-       
-
-
-
         </Card>
-        <Row>
-      <Col span={12}>col-12</Col>
-      <Col span={12}>col-12</Col>
-    </Row>
 
-          
+        <Row>
+          <Col span={6} style={{backgroundColor: '#D6EAF8', height:"250px" }}>
+            col-12
+          </Col>
+          <Col span={6}>col-12</Col>
+          <Col span={6}>col-12</Col>
+          <Col span={6}>col-12</Col>
+        </Row>
+
+   
       </Col>
   </Row>
        
