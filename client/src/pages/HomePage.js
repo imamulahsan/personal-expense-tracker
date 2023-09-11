@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Form, Input, message, Modal, Select, Table, DatePicker, Col, Row, Card } from "antd";
+import { Form, Input, message, Modal, Select, Table, DatePicker, Col, Row, Card, Progress } from "antd";
 import Layout from "./../components/Layout/Layout";
 import axios from "axios";
 import Spinner from "./../components/Spinner";
@@ -17,6 +17,35 @@ const HomePage = () => {
   const [selectedDate, setSelectedate] = useState([]);
   const [type, setType] = useState("all");
   const [loginUser, setLoginUser] = useState("");
+  const totalTransaction = allTransection.length;
+  const totalIncomeTransactions = allTransection.filter(
+    (transaction) => transaction.type === "income"
+  );
+  const totalExpenseTransactions = allTransection.filter(
+    (transaction) => transaction.type === "expense"
+  );
+  const totalIncomePercent =
+  (totalIncomeTransactions.length / totalTransaction) * 100;
+const totalExpensePercent =
+  (totalExpenseTransactions.length / totalTransaction) * 100;
+
+  //total turnover
+  const totalTurnover = allTransection.reduce(
+    (acc, transaction) => acc + transaction.amount,
+    0
+  );
+  const totalIncomeTurnover = allTransection
+    .filter((transaction) => transaction.type === "income")
+    .reduce((acc, transaction) => acc + transaction.amount, 0);
+
+  const totalExpenseTurnover = allTransection
+    .filter((transaction) => transaction.type === "expense")
+    .reduce((acc, transaction) => acc + transaction.amount, 0);
+
+  const totalIncomeTurnoverPercent =
+    (totalIncomeTurnover / totalTurnover) * 100;
+  const totalExpenseTurnoverPercent =
+    (totalExpenseTurnover / totalTurnover) * 100;
  
 
   //table data
@@ -45,6 +74,19 @@ const HomePage = () => {
     {
       title: "Actions",
     },
+  ];
+
+  // category
+  const categories = [
+    "salary",
+    "tip",
+    "project",
+    "food",
+    "movie",
+    "bills",
+    "medical",
+    "fee",
+    "tax",
   ];
 
   //getall transactions
@@ -101,7 +143,7 @@ const HomePage = () => {
       <Col span={4}>
         <Card title="Expense Manager"
         headStyle={{ backgroundColor: '#1B4F72', color: '#ffffff' }}
-        style={{ height: "87%" , backgroundColor: '#EAF2F8' }}
+        style={{ height: "120vh" , backgroundColor: '#EAF2F8' }}
         >
         <div className="user-area"> 
         <Avatar size={32} icon={<UserOutlined />} />
@@ -142,7 +184,10 @@ const HomePage = () => {
             <Select.Option value="all">Both</Select.Option>
           </Select>
           
+           
         </div>
+
+        <h5>Total Transactions : {totalTransaction}</h5> 
 
         </Card>
       </Col>
@@ -150,11 +195,11 @@ const HomePage = () => {
       <Col span={20}>
         <Card title="History"
         headStyle={{ backgroundColor: '#1B4F72', color: '#ffffff' }}
-        style={{ height: "50%" , backgroundColor: '#D6EAF8' }}>
+        style={{ height: "55vh" , backgroundColor: '#D6EAF8' }}>
         <div className="content">
         <Table columns={columns} 
          dataSource={allTransection}
-         pagination={{ defaultPageSize: 3, showSizeChanger: true, pageSizeOptions: ['3', '6', '9']}} />
+         pagination={{ defaultPageSize: 4, showSizeChanger: true, pageSizeOptions: ['4', '5']}} />
         </div>
         <Modal
         title="Add Transaction"
@@ -205,14 +250,109 @@ const HomePage = () => {
 
         </Card>
 
+        <Card title="Analytics"
+        headStyle={{ backgroundColor: '#1B4F72', color: '#ffffff' }}
+        style={{ height: "65vh" , backgroundColor: '#D6EAF8' }}>
         <Row>
-          <Col span={6} style={{backgroundColor: '#D6EAF8', height:"250px" }}>
-            col-12
+          <Col span={6}>
+              <h6 className="text-success">
+                No. of Income : {totalIncomeTransactions.length}
+              </h6>
+              <h6 className="text-danger">
+                No. of Expense : {totalExpenseTransactions.length}
+              </h6>
+              <div>
+                <Progress
+                  type="circle"
+                  strokeColor={"green"}
+                  className="mx-2"
+                  percent={totalIncomePercent.toFixed(0)}
+                />
+                <Progress
+                  type="circle"
+                  strokeColor={"red"}
+                  className="mx-2 mt-3"
+                  percent={totalExpensePercent.toFixed(0)}
+                />
+              </div>
+
+              <hr/>
+
+              <h6 className="text-success">Total Income : {totalIncomeTurnover}</h6>
+              <h6 className="text-danger">Total Expense : {totalExpenseTurnover}</h6>
+              <div>
+                <Progress
+                  type="circle"
+                  strokeColor={"green"}
+                  className="mx-2"
+                  percent={totalIncomeTurnoverPercent.toFixed(0)}
+                />
+                <Progress
+                  type="circle"
+                  strokeColor={"red"}
+                  className="mx-2 mt-3"
+                  percent={totalExpenseTurnoverPercent.toFixed(0)}
+                />
+              </div>
           </Col>
-          <Col span={6}>col-12</Col>
-          <Col span={6}>col-12</Col>
-          <Col span={6}>col-12</Col>
+          
+          <Col span={9}>
+          <h6>Categorywise Income</h6>
+          {categories.map((category) => {
+            const amount = allTransection
+              .filter(
+                (transaction) =>
+                  transaction.type === "income" &&
+                  transaction.category === category
+              )
+              .reduce((acc, transaction) => acc + transaction.amount, 0);
+            return (
+              amount > 0 && (
+                <div className="card mt-1">
+                  <div className="card-body">
+                    <h6>{category}</h6>
+                    <Progress
+                      percent={((amount / totalIncomeTurnover) * 100).toFixed(
+                        0
+                      )}
+                    />
+                  </div>
+                </div>
+              )
+            );
+          })}
+          </Col>
+          <Col span={9}>
+          <h6>Categorywise Expense</h6>
+          {categories.map((category) => {
+            const amount = allTransection
+              .filter(
+                (transaction) =>
+                  transaction.type === "expense" &&
+                  transaction.category === category
+              )
+              .reduce((acc, transaction) => acc + transaction.amount, 0);
+            return (
+              amount > 0 && (
+                <div className="card mt-2">
+                  <div className="card-body">
+                    <h6>{category}</h6>
+                    <Progress
+                      percent={((amount / totalExpenseTurnover) * 100).toFixed(
+                        0
+                      )}
+                    />
+                  </div>
+                </div>
+              )
+            );
+          })}
+          </Col>
         </Row>
+
+        </Card>
+
+        
 
    
       </Col>
