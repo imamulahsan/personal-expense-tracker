@@ -3,7 +3,7 @@ import { Form, Input, message, Modal, Select, Table, DatePicker, Col, Row, Card,
 import Layout from "./../components/Layout/Layout";
 import axios from "axios";
 import Spinner from "./../components/Spinner";
-import { UserOutlined } from '@ant-design/icons';
+import { UserOutlined,  EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { Avatar } from 'antd';
 import moment from "moment";
 const { RangePicker } = DatePicker;
@@ -12,16 +12,19 @@ const { RangePicker } = DatePicker;
 const HomePage = () => {
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [allTransection, setAllTransection] = useState([]);
+  const [allTransaction, setAllTransaction] = useState([]);
   const [frequency, setFrequency] = useState("7");
   const [selectedDate, setSelectedate] = useState([]);
   const [type, setType] = useState("all");
   const [loginUser, setLoginUser] = useState("");
-  const totalTransaction = allTransection.length;
-  const totalIncomeTransactions = allTransection.filter(
+  const [editable, setEditable] = useState(null);
+
+
+  const totalTransaction = allTransaction.length;
+  const totalIncomeTransactions = allTransaction.filter(
     (transaction) => transaction.type === "income"
   );
-  const totalExpenseTransactions = allTransection.filter(
+  const totalExpenseTransactions = allTransaction.filter(
     (transaction) => transaction.type === "expense"
   );
   const totalIncomePercent =
@@ -30,15 +33,15 @@ const totalExpensePercent =
   (totalExpenseTransactions.length / totalTransaction) * 100;
 
   //total turnover
-  const totalTurnover = allTransection.reduce(
+  const totalTurnover = allTransaction.reduce(
     (acc, transaction) => acc + transaction.amount,
     0
   );
-  const totalIncomeTurnover = allTransection
+  const totalIncomeTurnover = allTransaction
     .filter((transaction) => transaction.type === "income")
     .reduce((acc, transaction) => acc + transaction.amount, 0);
 
-  const totalExpenseTurnover = allTransection
+  const totalExpenseTurnover = allTransaction
     .filter((transaction) => transaction.type === "expense")
     .reduce((acc, transaction) => acc + transaction.amount, 0);
 
@@ -73,6 +76,22 @@ const totalExpensePercent =
     },
     {
       title: "Actions",
+      render: (text, record) => (
+        <div>
+          <EditOutlined
+            onClick={() => {
+              setEditable(record);
+              setShowModal(true);
+            }}
+          />
+          <DeleteOutlined
+            className="mx-2"
+            onClick={() => {
+              
+            }}
+          />
+        </div>
+      ),
     },
   ];
 
@@ -108,7 +127,7 @@ const totalExpensePercent =
           type,
         });
         setLoading(false);
-        setAllTransection(res.data);
+        setAllTransaction(res.data);
         console.log(res.data);
       } catch (error) {
         console.log(error);
@@ -198,7 +217,7 @@ const totalExpensePercent =
         style={{ height: "55vh" , backgroundColor: '#D6EAF8' }}>
         <div className="content">
         <Table columns={columns} 
-         dataSource={allTransection}
+         dataSource={allTransaction}
          pagination={{ defaultPageSize: 4, showSizeChanger: true, pageSizeOptions: ['4', '5']}} />
         </div>
         <Modal
@@ -206,8 +225,12 @@ const totalExpensePercent =
         open={showModal}
         onCancel={() => setShowModal(false)}
         footer={false}
+        style={{ backgroundColor: '#1F618D' }}
         >
-        <Form layout="vertical" onFinish={handleSubmit}>
+        <Form 
+        layout="vertical" onFinish={handleSubmit}
+        style={{ backgroundColor: '#D6EAF8' }}
+        >
           <Form.Item label="Amount" name="amount">
             <Input type="text" />
           </Form.Item>
@@ -299,7 +322,7 @@ const totalExpensePercent =
           <Col span={9}>
           <h6>Categorywise Income</h6>
           {categories.map((category) => {
-            const amount = allTransection
+            const amount = allTransaction
               .filter(
                 (transaction) =>
                   transaction.type === "income" &&
@@ -309,7 +332,7 @@ const totalExpensePercent =
             return (
               amount > 0 && (
                 <div className="card mt-1">
-                  <div className="card-body">
+                  <div className="card-body-income">
                     <h6>{category}</h6>
                     <Progress
                       percent={((amount / totalIncomeTurnover) * 100).toFixed(
@@ -325,7 +348,7 @@ const totalExpensePercent =
           <Col span={9}>
           <h6>Categorywise Expense</h6>
           {categories.map((category) => {
-            const amount = allTransection
+            const amount = allTransaction
               .filter(
                 (transaction) =>
                   transaction.type === "expense" &&
@@ -335,7 +358,7 @@ const totalExpensePercent =
             return (
               amount > 0 && (
                 <div className="card mt-2">
-                  <div className="card-body">
+                  <div className="card-body-expense">
                     <h6>{category}</h6>
                     <Progress
                       percent={((amount / totalExpenseTurnover) * 100).toFixed(
@@ -352,9 +375,6 @@ const totalExpensePercent =
 
         </Card>
 
-        
-
-   
       </Col>
   </Row>
        

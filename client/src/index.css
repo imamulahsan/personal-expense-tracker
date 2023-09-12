@@ -60,6 +60,14 @@ h5{
 }
 
 .ant-table-thead .ant-table-cell {
-  background-color: #F5EEF8 !important;
+  background-color: #CACFD2 !important;
   }
 /* transection page */
+
+.card-body-income{
+  background-color: #EAFAF1;
+}
+
+.card-body-expense{
+  background-color: #FDEDEC;
+}
