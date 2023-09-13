@@ -142,13 +142,28 @@ const totalExpensePercent =
     try {
       const user = JSON.parse(localStorage.getItem("user"));
       setLoading(true);
-      await axios.post("/transactions/add-transaction", {
-        ...values,
-        userid: user._id,
-      });
-      setLoading(false);
-      message.success("Transaction Added Successfully");
+      if(editable){
+        await axios.post("/transactions/edit-transaction", {
+          payload: {
+            ...values,
+            userId: user._id,
+          },
+          transacationId: editable._id,
+        });
+        setLoading(false);
+        message.success("Transaction Updateded Successfully");
+
+      }
+      else{
+        await axios.post("/transactions/add-transaction", {
+          ...values,
+          userid: user._id,
+        });
+        setLoading(false);
+        message.success("Transaction Added Successfully");
+      }
       setShowModal(false);
+      setEditable(null);
     } catch (error) {
       setLoading(false);
       message.error("Faild to add transection");
@@ -221,14 +236,16 @@ const totalExpensePercent =
          pagination={{ defaultPageSize: 4, showSizeChanger: true, pageSizeOptions: ['4', '5']}} />
         </div>
         <Modal
-        title="Add Transaction"
+        title={editable ? "Edit Transaction" : "Add Transection"}
         open={showModal}
         onCancel={() => setShowModal(false)}
         footer={false}
         style={{ backgroundColor: '#1F618D' }}
         >
         <Form 
-        layout="vertical" onFinish={handleSubmit}
+        layout="vertical"
+        onFinish={handleSubmit}
+        initialValues={editable}
         style={{ backgroundColor: '#D6EAF8' }}
         >
           <Form.Item label="Amount" name="amount">
