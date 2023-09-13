@@ -87,7 +87,7 @@ const totalExpensePercent =
           <DeleteOutlined
             className="mx-2"
             onClick={() => {
-              
+              handleDelete(record);
             }}
           />
         </div>
@@ -136,6 +136,22 @@ const totalExpensePercent =
     };
     getAllTransactions();
   }, [frequency, selectedDate, type]);
+
+  //delete handler
+  const handleDelete = async (record) => {
+    try {
+      setLoading(true);
+      await axios.post("/transactions/delete-transaction", {
+        transacationId: record._id,
+      });
+      setLoading(false);
+      message.success("Transaction Deleted!");
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+      message.error("unable to delete");
+    }
+  };
 
   // form handling
   const handleSubmit = async (values) => {
