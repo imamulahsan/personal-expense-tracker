@@ -15,6 +15,73 @@
   height: 90vh;
 }
 
+/*login page*/
+.login-page{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: #1F618D;
+}
+
+.login-form{
+  padding:  40px 40px; 
+  background:  #AED6F1; 
+  display:  flex; 
+  flex-direction:  column;
+  align-items:  flex-start; 
+  padding-bottom:  20px; 
+  width:  420px; 
+}
+
+.login-page .login-form h4{
+    margin-bottom:  20px;
+    color:  rgba(#000, .5);
+    span {
+      color:  rgba(#000, 1);
+      font-weight:  700; 
+    }
+}
+
+.login-page .login-form p{
+    margin-bottom:  5px; 
+    font-size:  14px; 
+    color:  #000; 
+    opacity:  .65;
+    font-weight:  400; 
+    margin-bottom:  40px;   
+}
+
+.login-page .login-form input{
+  font-size:  16px; 
+  padding:  20px 0px; 
+  height:  56px; 
+  border:  none; 
+  border-bottom:  solid 1px rgba(0,0,0,.1); 
+  background:  #fff; 
+  width:  350px; 
+  box-sizing:  border-box; 
+  transition:  all .3s linear; 
+  color:  #000; 
+  font-weight:  400;
+}
+
+.login-button{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size:  30px; 
+  width: 350px;
+  margin-bottom:  20px;
+}
+
+.login-register{
+  padding-left:  70px; 
+  display:  flex; 
+  flex-direction:  column;
+  align-items:  flex-start; 
+}
+
 /* transection page */
 .user-area{
   display: flex;
