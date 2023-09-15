@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Form, Input, message } from "antd";
 import { Link, useNavigate } from "react-router-dom";
+import {EuroOutlined} from '@ant-design/icons';
 import axios from "axios";
 import Spinner from "../components/Spinner";
 const Register = () => {
@@ -30,10 +31,11 @@ const Register = () => {
     <>
       <div className="resgister-page ">
         {loading && <Spinner />}
-        <Form layout="vertical" onFinish={submitHandler}>
-          <h1>Register Form</h1>
+        <Form layout="vertical" className="register-form" onFinish={submitHandler}>
+        <h4>Personal <span> EXPENSE TRACKER </span><EuroOutlined/></h4>
+        <p>SIGN UP to manage your personal expenses:</p>
           <Form.Item label="Name" name="name">
-            <Input />
+            <Input type="name" />
           </Form.Item>
           <Form.Item label="Email" name="email">
             <Input type="email" />
@@ -41,9 +43,11 @@ const Register = () => {
           <Form.Item label="Password" name="password">
             <Input type="password" />
           </Form.Item>
-          <div className="d-flex justify-content-between">
-            <Link to="/login">Already Register ? Cleck Here to login</Link>
-            <button className="btn btn-primary">Resgiter</button>
+          <div className="register-button">
+            <button className="btn btn-secondary">Sign Up</button>
+          </div>
+          <div className="login-register">
+            <Link to="/login">Already Registered? Click Here to Login</Link>
           </div>
         </Form>
       </div>

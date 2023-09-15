@@ -19,18 +19,18 @@ const HomePage = () => {
   const [loginUser, setLoginUser] = useState("");
   const [editable, setEditable] = useState(null);
 
-
+  //number of transactions
   const totalTransaction = allTransaction.length;
   const totalIncomeTransactions = allTransaction.filter(
     (transaction) => transaction.type === "income"
   );
+
   const totalExpenseTransactions = allTransaction.filter(
     (transaction) => transaction.type === "expense"
   );
-  const totalIncomePercent =
-  (totalIncomeTransactions.length / totalTransaction) * 100;
-const totalExpensePercent =
-  (totalExpenseTransactions.length / totalTransaction) * 100;
+
+  const totalIncomePercent = (totalIncomeTransactions.length / totalTransaction) * 100;
+  const totalExpensePercent = (totalExpenseTransactions.length / totalTransaction) * 100;
 
   //total turnover
   const totalTurnover = allTransaction.reduce(
@@ -45,10 +45,8 @@ const totalExpensePercent =
     .filter((transaction) => transaction.type === "expense")
     .reduce((acc, transaction) => acc + transaction.amount, 0);
 
-  const totalIncomeTurnoverPercent =
-    (totalIncomeTurnover / totalTurnover) * 100;
-  const totalExpenseTurnoverPercent =
-    (totalExpenseTurnover / totalTurnover) * 100;
+  const totalIncomeTurnoverPercent = (totalIncomeTurnover / totalTurnover) * 100;
+  const totalExpenseTurnoverPercent = (totalExpenseTurnover / totalTurnover) * 100;
  
 
   //table data
@@ -131,7 +129,7 @@ const totalExpensePercent =
         console.log(res.data);
       } catch (error) {
         console.log(error);
-        message.error("Ftech Issue With Tranction");
+        message.error("Fetch Issue With Transaction!");
       }
     };
     getAllTransactions();
@@ -149,7 +147,7 @@ const totalExpensePercent =
     } catch (error) {
       setLoading(false);
       console.log(error);
-      message.error("unable to delete");
+      message.error("Unable to delete!");
     }
   };
 
@@ -167,7 +165,7 @@ const totalExpensePercent =
           transacationId: editable._id,
         });
         setLoading(false);
-        message.success("Transaction Updateded Successfully");
+        message.success("Transaction Updateded Successfully!");
 
       }
       else{
@@ -176,13 +174,13 @@ const totalExpensePercent =
           userid: user._id,
         });
         setLoading(false);
-        message.success("Transaction Added Successfully");
+        message.success("Transaction Added Successfully!");
       }
       setShowModal(false);
       setEditable(null);
     } catch (error) {
       setLoading(false);
-      message.error("Faild to add transection");
+      message.error("Faild to add transaction!");
     }
   };
 
@@ -252,7 +250,7 @@ const totalExpensePercent =
          pagination={{ defaultPageSize: 4, showSizeChanger: true, pageSizeOptions: ['4', '5']}} />
         </div>
         <Modal
-        title={editable ? "Edit Transaction" : "Add Transection"}
+        title={editable ? "Edit Transaction" : "Add New Transaction"}
         open={showModal}
         onCancel={() => setShowModal(false)}
         footer={false}
