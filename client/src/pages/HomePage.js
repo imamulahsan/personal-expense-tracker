@@ -16,6 +16,7 @@ const HomePage = () => {
   const [frequency, setFrequency] = useState("7");
   const [selectedDate, setSelectedate] = useState([]);
   const [type, setType] = useState("all");
+  const [category, setCategory] = useState("all");
   const [loginUser, setLoginUser] = useState("");
   const [editable, setEditable] = useState(null);
 
@@ -69,10 +70,6 @@ const HomePage = () => {
       dataIndex: "category",
     },
     {
-      title: "Refrence",
-      dataIndex: "refrence",
-    },
-    {
       title: "Actions",
       render: (text, record) => (
         <div>
@@ -95,15 +92,15 @@ const HomePage = () => {
 
   // category
   const categories = [
-    "salary",
-    "tip",
-    "project",
-    "food",
-    "movie",
-    "bills",
-    "medical",
-    "fee",
-    "tax",
+    "Rent",
+    "Insurance",
+    "Salary",
+    "Food",
+    "Bills",
+    "Entertainment",
+    "Medical",
+    "Cloth",
+    "Tax",
   ];
 
   //getall transactions
@@ -123,6 +120,7 @@ const HomePage = () => {
           frequency,
           selectedDate,
           type,
+          category,
         });
         setLoading(false);
         setAllTransaction(res.data);
@@ -133,7 +131,7 @@ const HomePage = () => {
       }
     };
     getAllTransactions();
-  }, [frequency, selectedDate, type]);
+  }, [frequency, selectedDate, type, category]);
 
   //delete handler
   const handleDelete = async (record) => {
@@ -189,61 +187,106 @@ const HomePage = () => {
       {loading && <Spinner />}
       <Row>
       <Col span={4}>
-        <Card title="Expense Manager"
-        headStyle={{ backgroundColor: '#1B4F72', color: '#ffffff' }}
-        style={{ height: "120vh" , backgroundColor: '#EAF2F8' }}
+        <Card
+        style={{ height: "120vh" , backgroundColor: '#FEF5E7' }}
+        cover={
+          <div
+          style={{
+            height: "20vh",
+            width: "100%",
+            background: "linear-gradient(#1A5276, #A9CCE3)",
+            color: "white",
+            fontSize: 30,
+            paddingTop: 25,
+            paddingLeft: 15
+          }}
+          >
+            <div className="user-area"> 
+            <Avatar size={48} icon={<UserOutlined />} style={{background: "#ffffff", color: "black"}} />
+            <p className="h4">{loginUser && loginUser.name}</p>{" "}
+            </div>
+          </div>
+        }
         >
-        <div className="user-area"> 
-        <Avatar size={32} icon={<UserOutlined />} />
-        <p className="h4">{loginUser && loginUser.name}</p>{" "}
-        </div>
         
-        <div className="user-button">
-          <button
-            className="btn btn-outline-dark" 
+        <div className="button-area">
+          <button className="user-button"
             onClick={() => setShowModal(true)}
           >
             Add Income/ Expense
           </button>
         </div>
 
-        <h5>Filter by date</h5>
+        <div className="search-filter">
+        Search Filters
        
-        <div className="date-filter">
-          <Select value={frequency} onChange={(values) => setFrequency(values)}>
-            <Select.Option value="7">Past Week</Select.Option>
-            <Select.Option value="30">Past Month</Select.Option>
-            <Select.Option value="365">Past year</Select.Option>
-            <Select.Option value="custom">Custom</Select.Option>
-          </Select>
-          {frequency === "custom" && (
-            <RangePicker
-              value={selectedDate}
-              onChange={(values) => setSelectedate(values)}
-            />
-          )}
+       <div className="date-filter">
+       Date
+         <Select value={frequency} onChange={(values) => setFrequency(values)} style={{marginLeft: "5px"}}>
+           <Select.Option value="7">Past Week</Select.Option>
+           <Select.Option value="30">Past Month</Select.Option>
+           <Select.Option value="365">Past year</Select.Option>
+           <Select.Option value="custom">Custom</Select.Option>
+         </Select>
+         {frequency === "custom" && (
+           <RangePicker
+             value={selectedDate}
+             onChange={(values) => setSelectedate(values)}
+           />
+         )}
+        
+       </div>
+       
+       <div className="type-filter">
+       Type
+         <Select value={type} onChange={(values) => setType(values)} style={{marginLeft: "5px"}}>
+           <Select.Option value="income">Income</Select.Option>
+           <Select.Option value="expense">Expense</Select.Option>
+           <Select.Option value="all">Both</Select.Option>
+         </Select>
          
-        </div>
-        <h5>Filter by type</h5>
-        <div className="type-filter">
-          <Select value={type} onChange={(values) => setType(values)}>
-            <Select.Option value="income">Income</Select.Option>
-            <Select.Option value="expense">Expense</Select.Option>
-            <Select.Option value="all">Both</Select.Option>
-          </Select>
           
-           
+       </div>
+
+       <div className="cat-filter">
+       Category
+         <Select value={category} onChange={(values) => setCategory(values)} style={{marginLeft: "5px"}}>
+           <Select.Option value="Rent">Rent</Select.Option>
+           <Select.Option value="Insurance">Insurance</Select.Option>
+           <Select.Option value="Salary">Salary</Select.Option>
+           <Select.Option value="all">ALL</Select.Option>
+         </Select>
+          
+       </div>
+
         </div>
 
-        <h5>Total Transactions : {totalTransaction}</h5> 
-
+        <div className="total-trans">
+        Total Transactions: {totalTransaction}
+        </div>
         </Card>
       </Col>
 
       <Col span={20}>
-        <Card title="History"
-        headStyle={{ backgroundColor: '#1B4F72', color: '#ffffff' }}
-        style={{ height: "55vh" , backgroundColor: '#D6EAF8' }}>
+        <Card
+        cover={
+          <div
+          style={{
+            height: "8vh",
+            width: "100%",
+            background: "linear-gradient(#D6EAF8, #EBDEF0, #D6EAF8)",
+            color: "#17202A",
+            fontSize: 30,
+            paddingTop: 5,
+            paddingLeft: 25
+          }}
+          >
+            <div>
+               Tabular History
+            </div>
+          </div>
+        }
+        style={{ height: "55vh" , backgroundColor: '#F7F9F9' }}>
         <div className="content">
         <Table columns={columns} 
          dataSource={allTransaction}
@@ -273,24 +316,21 @@ const HomePage = () => {
           </Form.Item>
           <Form.Item label="Category" name="category">
             <Select>
-              <Select.Option value="salary">Salary</Select.Option>
-              <Select.Option value="tip">Tip</Select.Option>
-              <Select.Option value="project">Project</Select.Option>
-              <Select.Option value="food">Food</Select.Option>
-              <Select.Option value="movie">Movie</Select.Option>
-              <Select.Option value="bills">Bills</Select.Option>
-              <Select.Option value="medical">Medical</Select.Option>
-              <Select.Option value="fee">Fee</Select.Option>
-              <Select.Option value="tax">TAX</Select.Option>
+              <Select.Option value="Rent">Rent</Select.Option>
+              <Select.Option value="Insurance">Insurance</Select.Option>
+              <Select.Option value="Salary">Salary</Select.Option>
+              <Select.Option value="Food">Food</Select.Option>
+              <Select.Option value="Bills">Bills</Select.Option>
+              <Select.Option value="Entertainment">Entertainment</Select.Option>
+              <Select.Option value="Medical">Medical</Select.Option>
+              <Select.Option value="Cloths">Cloths</Select.Option>
+              <Select.Option value="Tax">Tax</Select.Option>
             </Select>
           </Form.Item>
           <Form.Item label="Date" name="date">
             <Input type="date" />
           </Form.Item>
           <Form.Item label="Refrence" name="refrence">
-            <Input type="text" />
-          </Form.Item>
-          <Form.Item label="Description" name="description">
             <Input type="text" />
           </Form.Item>
           <div className="d-flex justify-content-end">
@@ -304,9 +344,24 @@ const HomePage = () => {
 
         </Card>
 
-        <Card title="Analytics"
-        headStyle={{ backgroundColor: '#1B4F72', color: '#ffffff' }}
-        style={{ height: "65vh" , backgroundColor: '#D6EAF8' }}>
+        <Card cover={
+          <div
+          style={{
+            height: "8vh",
+            width: "100%",
+            background: "linear-gradient(#D6EAF8, #EBDEF0, #D6EAF8)",
+            color: "#17202A",
+            fontSize: 30,
+            paddingTop: 5,
+            paddingLeft: 25
+          }}
+          >
+            <div>
+               Analytics Dashboard
+            </div>
+          </div>
+        }
+        style={{ height: "65vh" , backgroundColor: '#F7F9F9' }}>
         <Row>
           <Col span={6}>
               <h6 className="text-success">

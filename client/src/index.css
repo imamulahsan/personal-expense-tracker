@@ -8,6 +8,14 @@
   height: 120vh;
 }
 
+@media (max-width: 768px) {
+  .content {
+    height: 180vh;
+  }
+
+  
+}
+
 /*register page*/
 /*register page*/
 /*register page*/
@@ -163,39 +171,95 @@
 }
 
 .h4{
-  margin-left: 10px;
-}
-
-h5{
-  text-align: center;
-  margin-top: 40px;
-}
-
-.user-button{
-  display: flex;
-  justify-content: center;
-  padding: 5px;
-  margin-top: 10px;
-  margin-bottom: 10px;
-
+  margin-left: 15px;
+  color: white;
+  margin-top: 7px;
 }
 
 
-.date-filter {
+.button-area{
   display: flex;
   justify-content: center;
   padding: 5px;
   margin-top: 10px;
   margin-bottom: 10px;
 }
+
+.user-button {
+  padding: 2px 2px;
+  border-radius: 5px;
+  box-shadow: 0px 0px 12px -2px rgba(222, 6, 6, 0.5);
+  line-height: 1.25;
+  background: #082c7a;
+  text-decoration: none;
+  color: white;
+  font-size: 20px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  position: relative;
+  transition: background-color .6s ease;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.search-filter{
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 30px;
+  background: #E6B0AA;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0px 0px 12px -2px rgba(60, 1, 1, 0.5);
+  margin-bottom: 20px;
+}
+
+.date-filter{
+  display: flex;
+  justify-content: space-between;
+  padding: 5px;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  font-size: 20px;
+}
+
+
 
 .type-filter{
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   padding: 5px;
-  margin-top: 15px;
+  margin-top: 20px;
   margin-bottom: 10px;
+  font-size: 20px;
+}
 
+.cat-filter{
+  display: flex;
+  justify-content: space-between;
+  padding: 5px;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  font-size: 20px;
+}
+
+.total-trans{
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 20px;
+  background: #E6B0AA;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0px 0px 12px -2px rgba(192, 243, 25, 0.5);
+  margin-bottom: 10px;
+  margin-top: 40px;
+}
+
+@media (max-width: 768px) {
+  .content {
+    height: 180vh;
+  }
+
+  
 }
 
 .ant-table-thead .ant-table-cell {
